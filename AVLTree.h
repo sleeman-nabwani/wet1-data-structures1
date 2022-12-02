@@ -1,4 +1,3 @@
-
 #ifndef AVL_TREE_
 #define AVL_TREE_
 
@@ -10,15 +9,15 @@ class AVLTree
 {
 public:
 
-	class Node
-	{
-	public:
-		T* data;
+    class Node
+    {
+    public:
+        T* data;
         int height;
-		Node* Left;
-		Node* Right;
+        Node* Left;
+        Node* Right;
 
-		Node(const T& data) : data(new T(data)),height(1), Left(nullptr), Right(nullptr) {}
+        Node(const T& data) : data(new T(data)) ,height(1), Left(nullptr), Right(nullptr) {}
         Node(const Node& n)
         {
             data = new T(*(n.data));
@@ -42,13 +41,13 @@ public:
             }
             data = new T(*(node.data));
             if (node.Left) {
-                Left = new Node<T>(*(node.Left));
+                Left = new Node(*(node.Left));
             }
             else {
                 Left = nullptr;
             }
             if (node.Right) {
-                Right = new Node<T>(*(node.Right));
+                Right = new Node(*(node.Right));
             }
             else {
                 Right = nullptr;
@@ -59,26 +58,26 @@ public:
         {
             delete data;
         }
-	};
-	Node* root;
-	int NodeCount;
-	void insert(T x)
+    };
+    Node* root;
+    int NodeCount;
+    void insert(T x)
     {
-		root = insertUtil(root, x);
-	}
-	void remove(T x) 
+        root = insertUtil(root, x);
+    }
+    void remove(T x)
     {
-		root = removeUtil(root, x);
-	}
-	Node* search(T x) 
+        root = removeUtil(root, x);
+    }
+    Node* search(T x)
     {
-		return searchUtil(root, x);
-	}
-	void inorder(T* arr) 
+        return searchUtil(root, x);
+    }
+    void inorder(T* arr)
     {
         int i = 0;
-		inorderUtil(root,arr,i);
-	}
+        inorderUtil(root,arr,i);
+    }
     AVLTree() :root(nullptr),NodeCount(0) {}
     AVLTree(const AVLTree& Tree)
     {
@@ -121,9 +120,6 @@ public:
         // Process left child
         printTree(root->Left, space);
     }
-    int height() {
-        return(height(root));
-    }
 private:
     Node* CopyTree(Node* root)
     {
@@ -150,7 +146,7 @@ private:
     }
 
     int height(Node* head) {
-        if (head == nullptr) 
+        if (head == nullptr)
             return 0;
         return head->height;
     }
@@ -181,15 +177,15 @@ private:
         inorderUtil(head->Right,arr,i);
     }
     Node* insertUtil(Node* head, T x) {
-        if (head == nullptr) 
+        if (head == nullptr)
         {
             NodeCount +=1;
             Node* temp = new Node(x);
             return temp;
         }
-        if (x < *head->data) 
+        if (x < *head->data)
             head->Left = insertUtil(head->Left, x);
-        else if (x > *head->data) 
+        else if (x > *head->data)
             head->Right = insertUtil(head->Right, x);
         head->height = 1 + max(height(head->Left), height(head->Right));
         int bal = height(head->Left) - height(head->Right);
@@ -214,7 +210,7 @@ private:
         return head;
     }
     Node* removeUtil(Node* head, T x) {
-        if (head == nullptr) 
+        if (head == nullptr)
             return nullptr;
         if (x < *head->data)
         {
@@ -224,7 +220,7 @@ private:
         {
             head->Right = removeUtil(head->Right, x);
         }
-        else 
+        else
         {
             Node* r = head->Right;
             if (head->Right == nullptr) {
@@ -237,13 +233,13 @@ private:
                 head = r;
             }
             else {
-                while (r->Left != nullptr) 
+                while (r->Left != nullptr)
                     r = r->Left;
                 *head->data = *r->data;
                 head->Right = removeUtil(head->Right, *r->data);
             }
         }
-        if (head == nullptr) 
+        if (head == nullptr)
             return head;
         head->height = 1 + max(height(head->Left), height(head->Right));
         int bal = height(head->Left) - height(head->Right);
@@ -271,13 +267,62 @@ private:
         if (head == nullptr)
             return nullptr;
         T k = *head->data;
-        if (k == x) 
+        if (k == x)
             return head;
         else if(k < x)
             return searchUtil(head->Right, x);
-        else 
+        else
             return searchUtil(head->Left, x);
     }
 };
+
+//template<class T>
+//inline Node<T>::Node(const Node<T>& n)
+//{
+//	data = new T(*(n.data));
+//	if (n.Left) {
+//		Left = new Node<T>(*(n.Left));
+//	}
+//	else {
+//		Left = nullptr;
+//	}
+//	if (n.Right) {
+//		Right = new Node<T>(*(n.Right));
+//	}
+//	else
+//		Right = nullptr;
+//}
+
+//template<class T>
+//inline Node<T>& Node<T>::operator=(const Node<T>&Node)
+//{
+//	if (this == &Node) {
+//		return *this;
+//	}
+//	data = new T(*(Node.data));
+//	if (Node.Left) {
+//		Left = new Node<T>(*(Node.Left));
+//	}
+//	else {
+//		Left = nullptr;
+//	}
+//	if (Node.Right) {
+//		Right = new Node<T>(*(Node.Right));
+//	}
+//	else {
+//		Right = nullptr;
+//	}
+//	return *this;
+//}
+//
+//template<class T>
+//inline Node<T>::~Node()
+//{
+//	delete data;
+//}
+
+
+
+
 
 #endif

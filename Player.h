@@ -1,6 +1,7 @@
 #ifndef PLAYER_
 #define PLAYER_
 #include <iostream>
+#include <memory>
 using namespace std;
 class Player
 {
@@ -10,15 +11,19 @@ class Player
 	int gamesPlayed;
 	int goals;
 	int cards;
+
 public:
-	Player(int playerId, shared_ptr<int> teamId, bool GoalKeeper=false, int gamesPlayed = 0, int goals = 0, int cards = 0) :playerId(playerId),
-		teamId(teamId), isGoalKeeper(GoalKeeper), gamesPlayed(gamesPlayed), goals(goals), cards(cards) {}
-	Player(const Player& p);
-	~Player()=default;
-	Player& operator=(const Player& p);
+    /// C'tor
+	Player(int playerId, shared_ptr<int> teamId, bool GoalKeeper=false, int gamesPlayed = 0, int goals = 0, int cards = 0);
+    /// Copy C'tor
+    Player(const Player& p) = default;
+    /// destructor
+	~Player() = default;
+    /// overloaded operators
+	Player& operator=(const Player& p) = default;
 	friend ostream& operator<<(ostream& os, const Player& p);
-	bool operator<(const Player& p1);
-	bool operator>(const Player& p1);
+	bool operator<(const Player& p1) const;
+	bool operator>(const Player& p1) const;
 };
 inline ostream& operator<<(ostream& os, const Player& p)
 {

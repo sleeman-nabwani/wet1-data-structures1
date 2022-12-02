@@ -1,5 +1,6 @@
 ﻿#include "AVLTree.h"
 #include"Player.h"
+#include "PlayerById.h"
 #include"Team.h"
 #include <iostream>
 
@@ -24,7 +25,6 @@ int main()
 	}
 	cout << endl<<endl;
 	test1.printTree(test1.root);
-	std::cout<< test1.height();
 	std::cout << "---------------------------------" << std::endl;
 	AVLTree<int>::Node* x = test1.search(3000);
 	test1.remove(*x->data);
@@ -67,7 +67,7 @@ int main()
 	std::cout << "---------------------------------" << std::endl;
 	std::cout << "---------------------------------" << std::endl;
 	Team t1(1);
-	Player p1 = *(new Player(2, t1.getTeamId()));
+	Player p1 = Player(2, t1.getTeamId());
 	AVLTree<Player> test7;
 	test7.insert(p1);
 	test7.printTree(test7.root);
@@ -75,9 +75,13 @@ int main()
 	AVLTree<Team> test8;
 	test8.insert(t1);
 	test8.printTree(test8.root);
+	std::cout << "---------------------------------******" << std::endl;
+	shared_ptr<int> y = t1.getTeamId();
+	*y = 4;
+	test8.printTree(test8.root);
 	std::cout << "---------------------------------" << std::endl;
-	AVLTree<Player>test9;
-
-
-
+	test7.printTree(test7.root);
+	std::cout << "---------------------------------" << std::endl;
+    PlayerById copy = PlayerById(2,&p1);
+    cout << copy;
 }
