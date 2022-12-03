@@ -5,16 +5,17 @@
 using namespace std;
 
 class PlayerById {
+protected:
     int playerId;
-    Player* stats;
+    shared_ptr<Player> stats;
 
 public:
     /// C'tor
-    PlayerById(int playerId, Player* stats = nullptr): playerId(playerId), stats(stats) {}
+    PlayerById(Player& player);
     /// Copy C'tor
     PlayerById(const PlayerById& player) = default;
     /// destructor
-    ~PlayerById() = default;
+    virtual ~PlayerById() = default;
     /// overloaded operators
     PlayerById& operator=(const PlayerById& p) = default;
     friend ostream& operator<<(ostream& os, const PlayerById& p);

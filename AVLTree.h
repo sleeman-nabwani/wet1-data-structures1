@@ -267,12 +267,12 @@ private:
         if (head == nullptr)
             return nullptr;
         T k = *head->data;
-        if (k == x)
-            return head;
+        if (k >x)
+            return searchUtil(head->Left, x);
         else if(k < x)
             return searchUtil(head->Right, x);
         else
-            return searchUtil(head->Left, x);
+            return head;
     }
 };
 

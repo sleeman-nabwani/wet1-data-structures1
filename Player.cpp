@@ -45,3 +45,11 @@ Player::Player(int playerId, shared_ptr<int> teamId, bool GoalKeeper, int gamesP
 }
 
 
+const int Player::getId() const{
+    return playerId;
+}
+
+
+int Player::getGamesPlayed() const{
+    return gamesPlayed;
+}

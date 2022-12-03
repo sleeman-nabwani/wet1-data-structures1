@@ -2,9 +2,9 @@
 
 
     Team::Team(int teamId, int points, int teamTopScorerId,
-     bool hasAGoalkeeper, int teamPlayersCount,
+     bool hasGoalKeeper, int teamPlayersCount,
      int totalGoals, int totalCards, AVLTree<Player> teamPlayersTree):
-        points(points), teamTopScorerId(teamTopScorerId), hasAGoalKeeper(hasAGoalkeeper),
+        points(points), teamTopScorerId(teamTopScorerId), hasGoalKeeper(hasGoalKeeper),
         teamPlayersCount(teamPlayersCount), totalGoals(totalGoals),
         totalCards(totalCards), teamPlayersTree(teamPlayersTree) {
     this->teamId = make_shared<int>(teamId);
@@ -23,10 +23,6 @@
 	return *this;
 }
 
-shared_ptr<int>& Team::getTeamId()
-{
-	return teamId;
-}
 
 bool Team::operator<(const Team& t1)
 {
@@ -40,3 +36,42 @@ bool Team::operator>(const Team& t1)
 		return true;
 	return false;
 }
+
+
+shared_ptr<int>& Team::getTeamId()
+{
+    return teamId;
+}
+
+int Team::getTeamPlayersCount() const {
+    return teamPlayersCount;
+}
+
+int Team::getTotalCards() const {
+    return totalCards;
+}
+
+int Team::getTotalGoals() const {
+    return totalGoals;
+}
+
+bool Team::hasKeeper() const {
+    return hasGoalKeeper;
+}
+
+int Team::getPoints() const {
+    return points;
+}
+
+void Team::updatePoints(int x) {
+    points += x;
+}
+
+
+int Team::getTopScorer() const {
+    return teamTopScorerId;
+}
+
+
+
+

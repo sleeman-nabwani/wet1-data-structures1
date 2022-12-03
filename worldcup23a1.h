@@ -22,10 +22,10 @@
 
 class world_cup_t {
 private:
-	int allPlayersCount;
-	int topScorer;
+    int allPlayersCount;
+    int topScorer;
 	AVLTree<Player> allPlayersTree;
-	AVLTree<Team> allTeamsTree;
+    AVLTree<Team> allTeamsTree;
 public:
 	// <DO-NOT-MODIFY> {
 	

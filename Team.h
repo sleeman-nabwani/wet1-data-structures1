@@ -10,25 +10,35 @@ class Team
 	int points;
 	int teamTopScorerId;
 	int teamPlayersCount;
-	bool hasAGoalKeeper;
+	bool hasGoalKeeper;
     int totalGoals;
     int totalCards;
 	AVLTree<Player> teamPlayersTree;
 public:
-    /// C'tor
+    /// C'tor:
 	Team(int teamId, int points = 0, int teamTopScorerId = 0,
-         bool hasAGoalkeeper = false, int teamPlayersCount = 0,
+         bool hasGoalKeeper = false, int teamPlayersCount = 0,
          int totalGoals = 0, int totalCards = 0, AVLTree<Player> teamPlayersTree = AVLTree<Player>());
-    /// Copy C'tor
+    /// Copy C'tor:
 	Team(const Team& t) = default;
-    /// destructor
+    /// destructor:
 	~Team() = default;
-    /// overloaded operators
+    /// overloaded operators:
 	Team& operator=(const Team& t);
-	shared_ptr<int>& getTeamId();
 	friend ostream& operator<<(ostream& os, const Team& t);
 	bool operator<(const Team& t1);
 	bool operator>(const Team& t1);
+    /// getters:
+    shared_ptr<int>& getTeamId();
+    int getTeamPlayersCount() const;
+    int getTotalCards() const;
+    int getTotalGoals() const;
+    bool hasKeeper() const;
+    int getPoints() const;
+    int getTopScorer() const;
+    /// setters & such:
+    void updatePoints(int x);
+    /// functions:
 };
 inline ostream& operator<<(ostream& os, const Team& t)
 {
