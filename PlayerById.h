@@ -11,7 +11,7 @@ protected:
 
 public:
     /// C'tor
-    PlayerById(Player& player);
+    explicit PlayerById(Player& player);
     /// Copy C'tor
     PlayerById(const PlayerById& player) = default;
     /// destructor
@@ -23,9 +23,8 @@ public:
     bool operator>(const PlayerById& player1) const;
 };
 
-inline ostream& operator<<(ostream& os, const PlayerById& p)
-{
-    return os << *(p.stats);
+inline ostream& operator<<(ostream& os, const PlayerById& p){
+    os<<*p.stats;
 }
 
 #endif //MAIN23A1_CPP_PLAYERBYID_H

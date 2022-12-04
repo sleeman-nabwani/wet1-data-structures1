@@ -30,8 +30,11 @@ int main()
 	test1.remove(*x->data);
 	test1.printTree(test1.root);
 	std::cout << "---------------------------------" << std::endl;
-	test1.insert(2); 
+	test1.insert(2);
 	test1.printTree(test1.root);
+    std::cout << "---------------------------------" << std::endl;
+    AVLTree<int>::Node* max= test1.getMax();
+    std::cout<<*max->data<<endl;
 	std::cout << "---------------------------------" << std::endl;
 	AVLTree<int> test2;
 	test2.insert(100);

@@ -17,7 +17,9 @@ public:
         Node* Left;
         Node* Right;
 
-        Node(const T& data) : data(new T(data)) ,height(1), Left(nullptr), Right(nullptr) {}
+        explicit Node(const T& data) : data(new T(data)) ,height(1), Left(nullptr), Right(nullptr) {
+
+        }
         Node(const Node& n)
         {
             data = new T(*(n.data));
@@ -61,6 +63,11 @@ public:
     };
     Node* root;
     int NodeCount;
+    Node* getMax(){
+        while(root && root->Right)
+            root = root->Right;
+        return root;
+    }
     void insert(T x)
     {
         root = insertUtil(root, x);
@@ -98,50 +105,52 @@ public:
     {
         DeleteTree(this->root);
     }
-    void printTree(Node* root, int space = 0)
+    void printTree(Node* nodeRoot, int space = 0)
     {
         // Base case
-        if (root == nullptr)
+        if (nodeRoot == nullptr)
             return;
 
         // Increase distance between levels
         space += 10;
 
         // Process right child first
-        printTree(root->Right, space);
+        printTree(nodeRoot->Right, space);
 
         // Print current node after space
         // count
         cout << endl;
         for (int i = 10; i < space; i++)
             cout << " ";
-        cout << *(root->data) << "\n";
+        cout << *(nodeRoot->data) << "\n";
 
         // Process left child
-        printTree(root->Left, space);
+        printTree(nodeRoot->Left, space);
     }
 private:
-    Node* CopyTree(Node* root)
+    Node* CopyTree(Node* nodeRoot)
     {
-        if (root)
+        if (nodeRoot)
         {
-            Node* newRoot = new Node(*root->data);
-            newRoot->Left = new Node(*root->Left);
-            newRoot->Right = new Node(*root->Right);
+            Node* newRoot = new Node(*nodeRoot->data);
+            if(nodeRoot->Left)
+                newRoot->Left = new Node(*nodeRoot->Left);
+            if(nodeRoot->Right)
+                newRoot->Right = new Node(*nodeRoot->Right);
             return newRoot;
         }
         else
             return nullptr;
     }
-    void DeleteTree(Node* root)
+    void DeleteTree(Node* nodeRoot)
     {
-        if (root == nullptr)
+        if (nodeRoot == nullptr)
             return;
         else
         {
-            DeleteTree(root->Left);
-            DeleteTree(root->Right);
-            delete root;
+            DeleteTree(nodeRoot->Left);
+            DeleteTree(nodeRoot->Right);
+            delete nodeRoot;
         }
     }
 
@@ -241,7 +250,7 @@ private:
         }
         if (head == nullptr)
             return head;
-        head->height = 1 + max(height(head->Left), height(head->Right));
+        head->height = 1 + (height(head->Left), height(head->Right));
         int bal = height(head->Left) - height(head->Right);
         if (bal > 1) {
             if (height(head->Left) >= height(head->Right)) {

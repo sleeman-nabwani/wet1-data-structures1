@@ -11,13 +11,14 @@ class Team
 	int teamTopScorerId;
 	int teamPlayersCount;
 	bool hasGoalKeeper;
+    shared_ptr<int> totalTeamGames;
     int totalGoals;
     int totalCards;
 	AVLTree<Player> teamPlayersTree;
 public:
     /// C'tor:
 	Team(int teamId, int points = 0, int teamTopScorerId = 0,
-         bool hasGoalKeeper = false, int teamPlayersCount = 0,
+         bool hasGoalKeeper = false,int totalTeamGames = 0, int teamPlayersCount = 0,
          int totalGoals = 0, int totalCards = 0, AVLTree<Player> teamPlayersTree = AVLTree<Player>());
     /// Copy C'tor:
 	Team(const Team& t) = default;
@@ -38,7 +39,11 @@ public:
     int getTopScorer() const;
     /// setters & such:
     void updatePoints(int x);
+    void updateGamesPlayed();
     /// functions:
+    void teamPlayersInOrder(Player* playersArray);
+    void moveTeam(Team &team);
+
 };
 inline ostream& operator<<(ostream& os, const Team& t)
 {

@@ -84,6 +84,8 @@ StatusType world_cup_t::play_match(int teamId1, int teamId2)
         team1.updatePoints(TEAM_DRAW);
         team2.updatePoints(TEAM_DRAW);
     }
+    team1.updateGamesPlayed();
+    team2.updateGamesPlayed();
 	return StatusType::SUCCESS;
 }
 
@@ -104,14 +106,41 @@ output_t<int> world_cup_t::get_team_points(int teamId) {
     Team teamToFind = Team(teamId);
     if(allPlayersTree.search(teamId) == nullptr)
         return output_t<int>(StatusType::INVALID_INPUT);
-    teamToFind = *allTeamsTree.search(teamToFind)->data;
+    teamToFind = *allTeamsTree.search(teamToFind)->data; // leak??????
     return output_t<int>(teamToFind.getPoints());
 }
 
 StatusType world_cup_t::unite_teams(int teamId1, int teamId2, int newTeamId)
 {
-	// TODO: Your code goes here
-	return StatusType::SUCCESS;
+	if(teamId1 <= 0 || teamId2 <= 0 || newTeamId <= 0 || teamId1 ==teamId2)
+        return StatusType::INVALID_INPUT;
+    Team team1(teamId1);
+    Team team2(teamId2);
+    Team newTeam(newTeamId);
+    if(allTeamsTree.search(team1) == nullptr || allTeamsTree.search(team2) == nullptr)
+        return StatusType::FAILURE;
+    team1 = *allTeamsTree.search(team1)->data; // possible leak??????
+    team2 = *allTeamsTree.search(team2)->data; // possible leak???????
+    if(allTeamsTree.search(newTeam) != nullptr){
+        if(newTeamId != teamId1 && newTeamId!= teamId2)
+            return StatusType::FAILURE;
+        else{
+            if(newTeamId == teamId1){
+                /// move to team 1
+                team1.moveTeam(team2);
+                allTeamsTree.remove(team2);
+                // delete team 2
+            }else{
+                /// move to team 2
+                team2.moveTeam(team1);
+                allTeamsTree.remove(team1);
+                // delete team 1
+        }
+    }
+    }else{
+        /// create new team and move team 1 then team 2 (debatable)
+    }
+    return StatusType::SUCCESS;
 }
 
 output_t<int> world_cup_t::get_top_scorer(int teamId) {
@@ -142,7 +171,7 @@ output_t<int> world_cup_t::get_all_players_count(int teamId)
         return output_t<int>(StatusType::INVALID_INPUT);
     Team team = Team(teamId);
     if(teamId > 0){
-        return output_t<int>(allTeamsTree.search(team)->data->getTeamPlayersCount());
+        return output_t<int>(allTeamsTree.search(team)->data->getTeamPlayersCount()); // leak??????
     }
     return output_t<int>(allPlayersCount);
     //static int i = 0;
@@ -151,10 +180,37 @@ output_t<int> world_cup_t::get_all_players_count(int teamId)
 
 StatusType world_cup_t::get_all_players(int teamId, int *const output)
 {
-	// TODO: Your code goes here
-    output[0] = 4001;
-    output[1] = 4002;
-	return StatusType::SUCCESS;
+	if(teamId == 0 || output == nullptr)
+        return StatusType::INVALID_INPUT;
+    if(teamId < 0){
+        if(allPlayersCount > 0) {
+            Player *playersByOrder = new Player[allPlayersCount];
+            allPlayersTree.inorder(playersByOrder);
+            for(int i = 0; i < allPlayersCount; i++){
+                output[i] = playersByOrder[i].getId();
+            }
+            return StatusType::SUCCESS;
+        }
+        return StatusType::FAILURE;
+    }
+    Team team = Team(teamId);
+    if(teamId > 0){
+        if(allTeamsTree.search(team) != nullptr){
+            team = *allTeamsTree.search(team)->data; // does this cause memory leak (created at line 167 first)
+            if(team.getTeamPlayersCount() > 0){
+                Player *playersByOrder = new Player[team.getTeamPlayersCount()];
+                team.teamPlayersInOrder(playersByOrder);
+                for(int i = 0; i < team.getTeamPlayersCount(); i++){
+                    output[i] = playersByOrder[i].getId();
+                }
+                return StatusType::SUCCESS;
+            }
+        }
+        return StatusType::FAILURE;
+    }
+    //output[0] = 4001;
+    //output[1] = 4002;
+	//return StatusType::SUCCESS;
 }
 
 output_t<int> world_cup_t::get_closest_player(int playerId, int teamId)

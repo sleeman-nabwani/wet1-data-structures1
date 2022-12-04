@@ -2,11 +2,12 @@
 
 
     Team::Team(int teamId, int points, int teamTopScorerId,
-     bool hasGoalKeeper, int teamPlayersCount,
+     bool hasGoalKeeper,int totalTeamGames, int teamPlayersCount,
      int totalGoals, int totalCards, AVLTree<Player> teamPlayersTree):
         points(points), teamTopScorerId(teamTopScorerId), hasGoalKeeper(hasGoalKeeper),
         teamPlayersCount(teamPlayersCount), totalGoals(totalGoals),
         totalCards(totalCards), teamPlayersTree(teamPlayersTree) {
+    this->totalTeamGames= make_shared<int>(totalTeamGames);
     this->teamId = make_shared<int>(teamId);
 }
 
@@ -18,6 +19,7 @@
 	teamTopScorerId = t.teamTopScorerId;
 	teamPlayersCount = t.teamPlayersCount;
     totalCards = t.totalCards;
+    totalTeamGames=t.totalTeamGames;
     totalGoals = t.totalGoals;
 	teamPlayersTree = t.teamPlayersTree;
 	return *this;
@@ -70,6 +72,38 @@ void Team::updatePoints(int x) {
 
 int Team::getTopScorer() const {
     return teamTopScorerId;
+}
+
+void Team::teamPlayersInOrder(Player *playersArray) {
+    teamPlayersTree.inorder(playersArray);
+}
+
+void Team::updateGamesPlayed() {
+    (*totalTeamGames)++;
+}
+
+void Team::moveTeam(Team &team){
+    this->points += team.points;
+    this->teamPlayersCount += team.teamPlayersCount;
+    this->totalGoals += team.totalGoals;
+    this->totalCards += team.totalCards;
+    /// Update top scorer
+    Player teamOneTopScorer = *this->teamPlayersTree.getMax()->data;
+    Player teamTwoTopScorer = *team.teamPlayersTree.getMax()->data;
+    if(teamOneTopScorer < teamTwoTopScorer)
+        this->teamTopScorerId = teamTwoTopScorer.getId();
+    else
+        this->teamTopScorerId = teamOneTopScorer.getId();
+    /// Update goalkeeper
+    if(this->hasGoalKeeper || team.hasGoalKeeper)
+        this->hasGoalKeeper = true;
+    /// seggs tmrw
+
+
+
+    *totalTeamGames = 0;
+
+
 }
 
 

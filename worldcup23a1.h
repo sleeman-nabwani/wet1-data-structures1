@@ -19,6 +19,7 @@
 #include "Player.h"
 #include "Team.h"
 #include "wet1util.h"
+#include "ActiveTeam.h"
 
 class world_cup_t {
 private:
@@ -26,6 +27,7 @@ private:
     int topScorer;
 	AVLTree<Player> allPlayersTree;
     AVLTree<Team> allTeamsTree;
+    AVLTree<ActiveTeam> activeTeamsTree;
 public:
 	// <DO-NOT-MODIFY> {
 	

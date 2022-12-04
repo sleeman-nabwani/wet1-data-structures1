@@ -39,9 +39,10 @@ bool Player::operator>(const Player& p1) const{
 	return true;
 }
 
-Player::Player(int playerId, shared_ptr<int> teamId, bool GoalKeeper, int gamesPlayed, int goals, int cards):
-        playerId(playerId), isGoalKeeper(GoalKeeper), gamesPlayed(gamesPlayed), goals(goals), cards(cards) {
+Player::Player(int playerId, shared_ptr<int> teamId, bool GoalKeeper,int teamGamesWhenJoind,shared_ptr<int> teamGamesPlayed, int gamesPlayed, int goals, int cards):
+        playerId(playerId), isGoalKeeper(GoalKeeper),teamGamesWhenJoind(teamGamesWhenJoind), gamesPlayed(gamesPlayed), goals(goals), cards(cards) {
     this->teamId = teamId;
+    this->teamGamesPlayed=teamGamesPlayed;
 }
 
 
@@ -53,3 +54,4 @@ const int Player::getId() const{
 int Player::getGamesPlayed() const{
     return gamesPlayed;
 }
+
